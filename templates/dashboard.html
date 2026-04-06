@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to Dashboard</h1>
+        <p class="text-xl text-gray-600">Manage your jobs and analytics</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <!-- Your Jobs -->
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100" data-aos="zoom-in">
+            <h3 class="text-2xl font-bold text-primary mb-2">Your Jobs</h3>
+            <p class="text-4xl font-bold text-gray-900">{{ user_jobs_count }}</p>
+            <a href="/post_job" class="mt-4 block bg-primary text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-all text-center">Post New Job</a>
+        </div>
+        <!-- Total Jobs -->
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100" data-aos="zoom-in" data-aos-delay="150">
+            <h3 class="text-2xl font-bold text-secondary mb-2">Total Jobs</h3>
+            <p class="text-4xl font-bold text-gray-900">{{ total_jobs }}</p>
+        </div>
+        <!-- Analytics -->
+        <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-8 rounded-2xl shadow-xl text-white" data-aos="zoom-in" data-aos-delay="300">
+            <h3 class="text-2xl font-bold mb-2">Analytics</h3>
+            <div class="text-5xl mb-4">📊</div>
+            <a href="/analytics" class="block bg-white text-purple-500 px-6 py-3 rounded-xl hover:bg-gray-100 transition-all font-bold text-center">View Insights</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="/jobs" class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100 text-center data-aos="fade-right">
+            <div class="text-5xl mb-6 mx-auto w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-primary">🔍</div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-3">Browse Jobs</h3>
+            <p class="text-gray-600 mb-6">View and apply for available jobs</p>
+        </a>
+        <a href="/post_job" class="bg-gradient-to-r from-primary to-blue-600 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all text-white text-center data-aos="fade-left">
+            <div class="text-5xl mb-6 mx-auto w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center">➕</div>
+            <h3 class="text-2xl font-bold mb-3">Post Job</h3>
+            <p class="mb-6">Share opportunities with job seekers</p>
+            <div class="text-sm opacity-90 bg-white/10 px-3 py-1 rounded-full inline-block">Employers only</div>
+        </a>
+    </div>
+</div>
+{% endblock %}

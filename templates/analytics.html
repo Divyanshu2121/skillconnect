@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard{% endblock %}
+
+{% block content %}
+<div class="mb-12 text-center">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Analytics Dashboard</h1>
+    <p class="text-xl text-gray-600">Insights into jobs, applications, and users</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Job Applications -->
+    <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <h3 class="text-2xl font-bold text-primary mb-6 text-center">Job Applications</h3>
+        {% if job_applications %}
+        <div class="h-96 relative">
+            <canvas id="jobChart"></canvas>
+        </div>
+        {% else %}
+        <div class="flex flex-col items-center justify-center h-96">
+            <div class="text-6xl mb-4">📈</div>
+            <p class="text-gray-500 text-lg">No application data yet</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Users per City -->
+    <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <h3 class="text-2xl font-bold text-secondary mb-6 text-center">Users per City</h3>
+        {% if users_city %}
+        <div class="h-96 relative">
+            <canvas id="cityChart"></canvas>
+        </div>
+        {% else %}
+        <div class="flex flex-col items-center justify-center h-96">
+            <div class="text-6xl mb-4">🏙️</div>
+            <p class="text-gray-500 text-lg">No user data yet</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Jobs per Category -->
+    <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <h3 class="text-2xl font-bold text-primary mb-6 text-center">Jobs per Category</h3>
+        {% if jobs_category %}
+        <div class="h-96 relative">
+            <canvas id="categoryChart"></canvas>
+        </div>
+        {% else %}
+        <div class="flex flex-col items-center justify-center h-96">
+            <div class="text-6xl mb-4">📋</div>
+            <p class="text-gray-500 text-lg">No job data yet</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+var jobData = {{ job_applications | tojson | safe or '[]' }};
+var cityData = {{ users_city | tojson | safe or '[]' }};
+var categoryData = {{ jobs_category | tojson | safe or '[]' }};
+
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 2000, easing: 'easeOutBounce' },
+    plugins: { legend: { position: 'top' } }
+};
+
+{% if job_applications %}
+new Chart(document.getElementById('jobChart'), {
+    type: 'bar',
+    data: {
+        labels: jobData.map(x => `Job ${x[0]}`),
+        datasets: [{
+            label: 'Applications',
+            data: jobData.map(x => x[1]),
+            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: chartOptions
+});
+{% endif %}
+
+{% if users_city %}
+new Chart(document.getElementById('cityChart'), {
+    type: 'pie',
+    data: {
+        labels: cityData.map(x => x[0]),
+        datasets: [{
+            data: cityData.map(x => x[1]),
+            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+        }]
+    },
+    options: chartOptions
+});
+{% endif %}
+
+{% if jobs_category %}
+new Chart(document.getElementById('categoryChart'), {
+    type: 'bar',
+    data: {
+        labels: categoryData.map(x => x[0]),
+        datasets: [{
+            label: 'Jobs',
+            data: categoryData.map(x => x[1]),
+            backgroundColor: 'rgba(16, 185, 129, 0.6)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: chartOptions
+});
+{% endif %}
+</script>
+{% endblock %}

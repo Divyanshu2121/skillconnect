@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SkillConnect{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { primary: '#3b82f6', secondary: '#10b981' } } }
+        }
+        AOS.init({ 
+            duration: 1000, 
+            offset: 120, 
+            once: true,
+            disable: window.innerWidth < 768 
+        });
+    
+    </script>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/dashboard" class="text-2xl font-bold text-primary">SkillConnect</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if session.user_id %}
+                        <a href="/post_job" class="text-gray-700 hover:text-primary">Post Job</a>
+                        <a href="/jobs" class="text-gray-700 hover:text-primary">Jobs</a>
+                        <a href="/analytics" class="text-gray-700 hover:text-primary">Analytics</a>
+                        <a href="/logout" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Logout</a>
+                    {% else %}
+                        <a href="/login" class="text-gray-700 hover:text-primary">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-8 px-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-auto p-4 text-center text-gray-500">
+        &copy; 2024 SkillConnect. All rights reserved.
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
